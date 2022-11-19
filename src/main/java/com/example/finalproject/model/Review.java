@@ -1,5 +1,6 @@
 package com.example.finalproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,7 +24,7 @@ public class Review {
     @Column(nullable = false)
     private int rating;
 
-    @Column(nullable = false)
+    @Column()
     private String comment;
 
     @ManyToOne

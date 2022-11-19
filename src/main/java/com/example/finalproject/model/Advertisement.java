@@ -27,6 +27,9 @@ public class Advertisement {
     @NotNull
     private BigDecimal price;
 
+    @NotNull
+    private Double averageRating;
+
     @OneToMany(mappedBy = "advertisement", cascade = CascadeType.PERSIST)
     @ToString.Exclude
     @JsonIgnore
