@@ -42,4 +42,6 @@ public class Advertisement {
     @ToString.Exclude
     private List<PurchaseItem> purchaseItems;
 
+    @OneToMany(mappedBy = "advertisement", fetch = FetchType.LAZY)
+    private List<Review> reviews;
 }
