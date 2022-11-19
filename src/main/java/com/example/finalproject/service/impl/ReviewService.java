@@ -40,16 +40,26 @@ public class ReviewService implements IReviewService {
         Advertisement advertisement = advertisementRepo.findById(review.getAdvertisement().getAdvertisementCode()).orElseThrow(() -> new NotFoundException("Advertisement not found"));
         review.setAdvertisement(advertisement);
 
-        // Verificar se o buyer já avaliou o anúncio
         repeatedReviewValidation(review);
 
-        // Verificar se o comprador já comprou ao menos um produto do anúncio
         purchaseItemRepo.findByBuyerCodeAndAdvertisementCodeWhenPurchaseOrderFinished(buyer.getBuyerCode(), advertisement.getAdvertisementCode()).orElseThrow(() -> new InvalidArgumentException(buyer.getName() + " hasn't bought any " + advertisement.getName() + " yet, so submitting a review is not allowed yet."));
 
         double average = calculateAverage(review, advertisement);
         advertisement.setAverageRating(average);
 
         return reviewRepo.save(review);
+    }
+
+    @Override
+    public Review updateReview(Review review, Long reviewCode) {
+        Review updatedReview = reviewRepo.findById(reviewCode).orElseThrow(() -> new NotFoundException("Review not found"));
+        updatedReview.setRating(review.getRating());
+        updatedReview.setComment(review.getComment());
+
+        double average = calculateAverage(updatedReview, updatedReview.getAdvertisement());
+        updatedReview.getAdvertisement().setAverageRating(average);
+
+        return reviewRepo.save(updatedReview);
     }
 
     private void repeatedReviewValidation(Review review) {
@@ -64,18 +74,15 @@ public class ReviewService implements IReviewService {
 
     private double calculateAverage(Review review, Advertisement advertisement) {
         List<Review> reviewList = reviewRepo.findByAdvertisement(advertisement);
-        BigDecimal average;
-        if (reviewList.isEmpty()) {
-            average = new BigDecimal(Double.toString(review.getRating()));
-        } else {
-            double sumRating = reviewList.stream()
-                    .mapToDouble(Review::getRating)
-                    .sum();
+        reviewList.add(review);
 
-            sumRating += review.getRating();
-            average = new BigDecimal(Double.toString(sumRating / (reviewList.size() + 1)));
-            average = average.setScale(1, RoundingMode.HALF_UP);
-        }
+        double sumRating = reviewList.stream()
+                .mapToDouble(Review::getRating)
+                .sum();
+
+        BigDecimal average = new BigDecimal(Double.toString(sumRating / reviewList.size()));
+        average = average.setScale(1, RoundingMode.HALF_UP);
+
         return average.doubleValue();
     }
 }
