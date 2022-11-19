@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "931dd803-c60e-428b-839c-16ca003587b8",
+		"_postman_id": "2f5cf13a-c5ba-4722-a10b-4ae145dacf35",
 		"name": "Projeto Integrador - Grupo 8",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23755010"
 	},
 	"item": [
 		{
@@ -352,6 +353,178 @@
 									"key": "order",
 									"value": "asc"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Requisito 06",
+			"item": [
+				{
+					"name": "Create Review for the Advertisement",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"advertisementCode\": 1,\n\t\"buyerName\": \"Neymar\",\n    \"rating\": 1,\n    \"comment\": \"This product is wonderful, it arrived frozen as expected and everyone here at home liked it.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/fresh-products/review",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"fresh-products",
+								"review"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Review",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rating\" : 3,\n    \"comment\" : \"This product is wonderful, it arrived frozen as expected and everyone at home liked it a lot.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/fresh-products/review/1",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"fresh-products",
+								"review",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Best Rated Advertisement by Category",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/fresh-products/review/list?category=congelado",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"fresh-products",
+								"review",
+								"list"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "congelado"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List All Advertisement by Buyer",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/fresh-products/review/rating-list?buyer=Neymar",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"fresh-products",
+								"review",
+								"rating-list"
+							],
+							"query": [
+								{
+									"key": "buyer",
+									"value": "Neymar"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Review",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/fresh-products/review/1",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"fresh-products",
+								"review",
+								"1"
 							]
 						}
 					},

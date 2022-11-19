@@ -241,6 +241,68 @@ a LATAM, criando os artefatos necessários para permitir as seguintes funcionali
 
 </details>
 
+<details>
+    <summary><h3> Requerimento 6   :tada:</h3></summary>
+
+
+#### Create Review for the Advertisement
+
+```http
+  POST localhost:8080/api/v1/fresh-products/review
+```
+###### **@RequestBody**
+
+```json
+{
+  "advertisementCode": 1,
+  "buyerName": "Neymar",
+  "rating": 1,
+  "comment": "This product is wonderful, it arrived frozen as expected and everyone here at home liked it."
+}
+```
+
+
+#### Update Review
+
+```http
+  PUT localhost:8080/api/v1/fresh-products/review/${reviewCode}
+```
+###### **@RequestBody**
+
+```json
+{
+  "rating" : 3,
+  "comment" : "This product is wonderful, it arrived frozen as expected and everyone at home liked it a lot."
+}
+```
+
+
+#### List Best Rated Advertisement by Category
+
+```http
+  GET localhost:8080/api/v1/fresh-products/review/list?category=${category}
+```
+| Parâmetro  | Tipo     | Descrição                                                                      |
+|:-----------|:---------|:-------------------------------------------------------------------------------|
+| `category` | `string` | **Obrigatório**. A categoria que você quer: *Refrigerado, Fresco ou Congelado* |
+
+
+#### List All Advertisement by Buyer
+
+```http
+  GET localhost:8080/api/v1/fresh-products/review/rating-list?buyer=${buyer}
+```
+| Parâmetro | Tipo     | Descrição                                           |
+|:----------|:---------|:----------------------------------------------------|
+| `buyer`   | `string` | **Obrigatório**. O nome do comprador que você quer: |
+
+
+#### Delete Review
+
+```http
+  DELETE localhost:8080/api/v1/fresh-products/review/${reviewCode}
+```
+</details>
 
 ## :file_folder: Download Endpoints
 
