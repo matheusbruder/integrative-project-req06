@@ -62,6 +62,12 @@ public class ReviewService implements IReviewService {
         return reviewRepo.save(updatedReview);
     }
 
+    @Override
+    public void deleteReview(Long reviewCode) {
+        Review review = reviewRepo.findById(reviewCode).orElseThrow(() -> new NotFoundException("Review not found"));
+        reviewRepo.delete(review);
+    }
+
     private void repeatedReviewValidation(Review review) {
         List<Review> reviewList = reviewRepo.findAll().stream()
                 .filter(r -> r.getBuyer().getBuyerCode().equals(review.getBuyer().getBuyerCode()))

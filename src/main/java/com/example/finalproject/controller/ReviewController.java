@@ -32,4 +32,11 @@ public class ReviewController {
         Review review = ReviewUpdateDTO.convertToReview(reviewUpdateDTO);
         return new ResponseEntity<>(ReviewDTO.convertToResponse(reviewService.updateReview(review, reviewCode)), HttpStatus.CREATED);
     }
+
+
+    @DeleteMapping("/review/{reviewCode}")
+    public ResponseEntity<Void> deleteReview(@PathVariable Long reviewCode) {
+        reviewService.deleteReview(reviewCode);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }
