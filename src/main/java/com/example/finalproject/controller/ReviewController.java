@@ -1,9 +1,6 @@
 package com.example.finalproject.controller;
 
-import com.example.finalproject.dto.AdvertisementDTO;
-import com.example.finalproject.dto.ReviewCreateDTO;
-import com.example.finalproject.dto.ReviewDTO;
-import com.example.finalproject.dto.ReviewUpdateDTO;
+import com.example.finalproject.dto.*;
 import com.example.finalproject.model.Review;
 import com.example.finalproject.service.IReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +36,11 @@ public class ReviewController {
     public ResponseEntity<List<AdvertisementDTO>> findTopRatedAdvertisementsByCategory(@RequestParam String category,
                                                                                        @RequestParam(required = false) Integer limit) {
         return new ResponseEntity<>(AdvertisementDTO.convertListToResponse(reviewService.findTopRatedAdvertisementsByCategory(category, limit)), HttpStatus.OK);
+    }
+
+    @GetMapping("/review/rating-list")
+    public ResponseEntity<BuyerReviewDTO> findAllReviewsByBuyer(@RequestParam(value = "buyer") Long buyerCode) {
+        return new ResponseEntity<>(BuyerReviewDTO.convertToResponse(reviewService.findAllReviewsByBuyer(buyerCode)), HttpStatus.OK);
     }
 
     @DeleteMapping("/review/{reviewCode}")

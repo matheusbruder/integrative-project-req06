@@ -8,7 +8,12 @@ import java.util.List;
 public interface IReviewService {
 
     Review createReview(Review review);
+
     Review updateReview(Review review, Long reviewCode);
+
     List<Advertisement> findTopRatedAdvertisementsByCategory(String category, Integer limit);
+
+    List<Review> findAllReviewsByBuyer(Long buyerCode);
+
     void deleteReview(Long reviewCode);
 }

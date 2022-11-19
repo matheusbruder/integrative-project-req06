@@ -78,6 +78,14 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
+    public List<Review> findAllReviewsByBuyer(Long buyerCode) {
+        Buyer buyer = buyerRepo.findById(buyerCode).orElseThrow(() -> new NotFoundException("Buyer not found"));
+        if (reviewRepo.findByBuyer(buyer).isEmpty())
+            throw new NotFoundException(buyer.getName() + " does not have any reviews yet");
+        return reviewRepo.findByBuyer(buyer);
+    }
+
+    @Override
     public void deleteReview(Long reviewCode) {
         Review review = reviewRepo.findById(reviewCode).orElseThrow(() -> new NotFoundException("Review not found"));
         reviewRepo.delete(review);
