@@ -5,16 +5,14 @@ import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.model.Advertisement;
 import com.example.finalproject.model.Buyer;
 import com.example.finalproject.model.Review;
-import com.example.finalproject.repository.AdvertisementRepo;
-import com.example.finalproject.repository.BuyerRepo;
-import com.example.finalproject.repository.PurchaseItemRepo;
-import com.example.finalproject.repository.ReviewRepo;
+import com.example.finalproject.repository.*;
 import com.example.finalproject.service.IReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +30,10 @@ public class ReviewService implements IReviewService {
 
     @Autowired
     PurchaseItemRepo purchaseItemRepo;
+
+    @Autowired
+    SectionRepo sectionRepo;
+
 
     @Override
     public Review createReview(Review review) {
@@ -63,6 +65,19 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
+    public List<Advertisement> findTopRatedAdvertisementsByCategory(String category, Integer limit) {
+        categoryValidation(category);
+        List<Advertisement> advertisementList = advertisementRepo.findAllByCategory(category.toLowerCase());
+        if (advertisementList.isEmpty()) throw new NotFoundException("No advertisement in this category");
+        limit = limitValidation(limit, advertisementList);
+
+        return advertisementList.stream()
+                .sorted(Comparator.comparing(Advertisement::getAverageRating).reversed())
+                .limit(limit)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void deleteReview(Long reviewCode) {
         Review review = reviewRepo.findById(reviewCode).orElseThrow(() -> new NotFoundException("Review not found"));
         reviewRepo.delete(review);
@@ -90,5 +105,15 @@ public class ReviewService implements IReviewService {
         average = average.setScale(1, RoundingMode.HALF_UP);
 
         return average.doubleValue();
+    }
+
+    private Integer limitValidation(Integer limit, List<Advertisement> advertisementList) {
+        if (limit == null) limit = advertisementList.size();
+        if (limit <= 0) throw new InvalidArgumentException("Limit must be positive");
+        return limit;
+    }
+
+    private void categoryValidation(String category) {
+        sectionRepo.findByCategory(category).orElseThrow(() -> new NotFoundException("Category does not exist"));
     }
 }

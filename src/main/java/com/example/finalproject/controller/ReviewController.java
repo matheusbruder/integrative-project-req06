@@ -1,5 +1,6 @@
 package com.example.finalproject.controller;
 
+import com.example.finalproject.dto.AdvertisementDTO;
 import com.example.finalproject.dto.ReviewCreateDTO;
 import com.example.finalproject.dto.ReviewDTO;
 import com.example.finalproject.dto.ReviewUpdateDTO;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/fresh-products")
@@ -33,6 +35,11 @@ public class ReviewController {
         return new ResponseEntity<>(ReviewDTO.convertToResponse(reviewService.updateReview(review, reviewCode)), HttpStatus.CREATED);
     }
 
+    @GetMapping("/review/list")
+    public ResponseEntity<List<AdvertisementDTO>> findTopRatedAdvertisementsByCategory(@RequestParam String category,
+                                                                                       @RequestParam(required = false) Integer limit) {
+        return new ResponseEntity<>(AdvertisementDTO.convertListToResponse(reviewService.findTopRatedAdvertisementsByCategory(category, limit)), HttpStatus.OK);
+    }
 
     @DeleteMapping("/review/{reviewCode}")
     public ResponseEntity<Void> deleteReview(@PathVariable Long reviewCode) {
