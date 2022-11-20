@@ -18,9 +18,12 @@ public class AdvertisementDTO {
 
     private BigDecimal price;
 
+    private double averageRating;
+
     public AdvertisementDTO(Advertisement advertisement) {
         this.name = advertisement.getName();
         this.price = advertisement.getPrice();
+        this.averageRating = advertisement.getAverageRating();
     }
 
     private static AdvertisementDTO convertToResponse(Advertisement advertisement) {
