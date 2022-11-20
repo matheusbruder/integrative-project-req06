@@ -255,8 +255,8 @@ a LATAM, criando os artefatos necessários para permitir as seguintes funcionali
 ```json
 {
   "advertisementCode": 1,
-  "buyerName": "Neymar",
-  "rating": 1,
+  "buyerCode": 1,
+  "rating": 3,
   "comment": "This product is wonderful, it arrived frozen as expected and everyone here at home liked it."
 }
 ```
@@ -271,7 +271,7 @@ a LATAM, criando os artefatos necessários para permitir as seguintes funcionali
 
 ```json
 {
-  "rating" : 3,
+  "rating" : 5,
   "comment" : "This product is wonderful, it arrived frozen as expected and everyone at home liked it a lot."
 }
 ```
@@ -280,21 +280,22 @@ a LATAM, criando os artefatos necessários para permitir as seguintes funcionali
 #### List Best Rated Advertisement by Category
 
 ```http
-  GET localhost:8080/api/v1/fresh-products/review/list?category=${category}
+  GET localhost:8080/api/v1/fresh-products/review/list?category=${category}&limit=${limit}
 ```
 | Parâmetro  | Tipo     | Descrição                                                                      |
 |:-----------|:---------|:-------------------------------------------------------------------------------|
 | `category` | `string` | **Obrigatório**. A categoria que você quer: *Refrigerado, Fresco ou Congelado* |
+| `limit`    | `int`    | **Opicional**. O número limite da listagem de anúncios                         |
 
 
 #### List All Advertisement by Buyer
 
 ```http
-  GET localhost:8080/api/v1/fresh-products/review/rating-list?buyer=${buyer}
+  GET localhost:8080/api/v1/fresh-products/review/rating-list?buyer=${buyerCode}
 ```
-| Parâmetro | Tipo     | Descrição                                           |
-|:----------|:---------|:----------------------------------------------------|
-| `buyer`   | `string` | **Obrigatório**. O nome do comprador que você quer: |
+| Parâmetro | Tipo  | Descrição                                            |
+|:----------|:------|:-----------------------------------------------------|
+| `buyer`   | `int` | **Obrigatório**. O código do comprador que você quer |
 
 
 #### Delete Review
@@ -304,7 +305,8 @@ a LATAM, criando os artefatos necessários para permitir as seguintes funcionali
 ```
 </details>
 
-## :file_folder: Download Endpoints
+## :file_folder: Downloads
 
+- [User Story (requisito 06)](src/main/resources/Requisito06_ml-add-advertisement-review-01.pdf)
 - [Collection (endpoints)](src/main/resources/projeto-integrador.postman_collection.json)
 

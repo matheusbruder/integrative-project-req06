@@ -370,7 +370,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"advertisementCode\": 1,\n\t\"buyerName\": \"Neymar\",\n    \"rating\": 1,\n    \"comment\": \"This product is wonderful, it arrived frozen as expected and everyone here at home liked it.\"\n}",
+							"raw": "{\n    \"advertisementCode\": 1,\n    \"buyerCode\": 1,\n    \"rating\": 3,\n    \"comment\": \"This product is wonderful, it arrived frozen as expected and everyone here at home liked it.\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -399,7 +399,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"rating\" : 3,\n    \"comment\" : \"This product is wonderful, it arrived frozen as expected and everyone at home liked it a lot.\"\n}",
+							"raw": "{\n    \"rating\" : 5,\n    \"comment\" : \"This product is wonderful, it arrived frozen as expected and everyone at home liked it a lot.\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -453,6 +453,11 @@
 							],
 							"query": [
 								{
+									"key": "limit",
+									"value": "2",
+									"disabled": true
+								},
+								{
 									"key": "category",
 									"value": "congelado"
 								}
@@ -479,7 +484,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{local}}/api/v1/fresh-products/review/rating-list?buyer=Neymar",
+							"raw": "{{local}}/api/v1/fresh-products/review/rating-list?buyer=1",
 							"host": [
 								"{{local}}"
 							],
@@ -493,7 +498,7 @@
 							"query": [
 								{
 									"key": "buyer",
-									"value": "Neymar"
+									"value": "1"
 								}
 							]
 						}
