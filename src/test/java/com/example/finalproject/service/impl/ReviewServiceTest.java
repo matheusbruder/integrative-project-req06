@@ -1,12 +1,12 @@
 package com.example.finalproject.service.impl;
 
+import com.example.finalproject.exception.InvalidArgumentException;
+import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.model.*;
 import com.example.finalproject.model.Enum.Category;
 import com.example.finalproject.model.Enum.OrderStatus;
-import com.example.finalproject.repository.AdvertisementRepo;
-import com.example.finalproject.repository.BuyerRepo;
-import com.example.finalproject.repository.PurchaseItemRepo;
-import com.example.finalproject.repository.ReviewRepo;
+import com.example.finalproject.repository.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -32,11 +33,13 @@ class ReviewServiceTest {
     @Mock
     ReviewRepo reviewRepo;
     @Mock
-    private BuyerRepo buyerRepo;
+    BuyerRepo buyerRepo;
     @Mock
-    private AdvertisementRepo advertisementRepo;
+    AdvertisementRepo advertisementRepo;
     @Mock
-    private PurchaseItemRepo purchaseItemRepo;
+    PurchaseItemRepo purchaseItemRepo;
+    @Mock
+    SectionRepo sectionRepo;
 
     private PurchaseOrder purchaseOrder;
     private PurchaseItem purchaseItem;
@@ -51,6 +54,7 @@ class ReviewServiceTest {
     private Warehouse warehouse;
     private List<Batch> batchList;
     private Review review;
+    private List<Review> reviewList;
 
     @BeforeEach
     void setUp() {
@@ -141,25 +145,127 @@ class ReviewServiceTest {
                 .buyer(buyer)
                 .purchaseItems(purchaseItemList)
                 .build();
+
+        review = Review.builder()
+                .reviewCode(1L)
+                .dateTime(LocalDateTime.now())
+                .rating(4)
+                .comment("My comment")
+                .buyer(buyer)
+                .advertisement(advertisement)
+                .build();
+        reviewList = new ArrayList<>();
+        reviewList.add(review);
     }
 
     @Test
     void createReview_saveAndReturnReview_whenSuccess() {
+        when(buyerRepo.findById(anyLong())).thenReturn(Optional.ofNullable(buyer));
+        when(advertisementRepo.findById(anyLong())).thenReturn(Optional.ofNullable(advertisement));
+        when(purchaseItemRepo.findByBuyerCodeAndAdvertisementCodeWhenPurchaseOrderFinished(buyer.getBuyerCode(), advertisement.getAdvertisementCode())).thenReturn(Optional.ofNullable(purchaseItem));
+
+        reviewService.createReview(review);
+
+        verify(reviewRepo, times(1)).save(review);
     }
 
     @Test
-    void updateReview() {
+    void createReview_returnInvalidArgumentException_whenBuyerHasNotBought() {
+        when(buyerRepo.findById(anyLong())).thenReturn(Optional.ofNullable(buyer));
+        when(advertisementRepo.findById(anyLong())).thenReturn(Optional.ofNullable(advertisement));
+
+        assertThrows(InvalidArgumentException.class, () -> reviewService.createReview(review));
     }
 
     @Test
-    void findTopRatedAdvertisementsByCategory() {
+    void createReview_returnInvalidArgumentException_whenRepeatedReview() {
+        when(buyerRepo.findById(anyLong())).thenReturn(Optional.ofNullable(buyer));
+        when(advertisementRepo.findById(anyLong())).thenReturn(Optional.ofNullable(advertisement));
+        when(reviewRepo.findAll()).thenReturn(reviewList);
+
+        assertThrows(InvalidArgumentException.class, () -> reviewService.createReview(review));
     }
 
     @Test
-    void findAllReviewsByBuyer() {
+    void updateReview_returnReview_whenSuccess() {
+        when(reviewRepo.findById(anyLong())).thenReturn(Optional.ofNullable(review));
+
+        reviewService.updateReview(review, review.getReviewCode());
+
+        verify(reviewRepo, times(1)).save(review);
     }
 
     @Test
-    void deleteReview() {
+    void updateReview_returnNotFoundException_whenReviewDoesNotExist() {
+        when(reviewRepo.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> reviewService.updateReview(review, review.getReviewCode()));
+    }
+
+    @Test
+    void findTopRatedAdvertisementsByCategory_returnAdvertisementList_whenSuccess() {
+        when(advertisementRepo.findAllByCategory(anyString())).thenReturn(advertisementList);
+        when(sectionRepo.findByCategory(anyString())).thenReturn(Optional.ofNullable(section));
+
+        List<Advertisement> advertisementListFiltered = reviewService.findTopRatedAdvertisementsByCategory("congelado", 1);
+
+        Assertions.assertNotNull(advertisementListFiltered);
+    }
+
+    @Test
+    void findTopRatedAdvertisementsByCategory_returnNotFoundException_whenCategoryDoesNotExist() {
+        when(sectionRepo.findByCategory(anyString())).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> reviewService.findTopRatedAdvertisementsByCategory("congelado", 1));
+    }
+
+    @Test
+    void findTopRatedAdvertisementsByCategory_returnNotFoundException_whenAdvertisementListIsEmpty() {
+        when(advertisementRepo.findAllByCategory(anyString())).thenReturn(new ArrayList<>());
+        when(sectionRepo.findByCategory(anyString())).thenReturn(Optional.ofNullable(section));
+
+
+        assertThrows(NotFoundException.class, () -> reviewService.findTopRatedAdvertisementsByCategory("congelado", 1));
+    }
+
+    @Test
+    void findAllReviewsByBuyer_returnReviewListByBuyer_whenSuccess() {
+        when(buyerRepo.findById(anyLong())).thenReturn(Optional.ofNullable(buyer));
+        when(reviewRepo.findByBuyer(any())).thenReturn(reviewList);
+
+        List<Review> reviewList = reviewService.findAllReviewsByBuyer(buyer.getBuyerCode());
+
+        Assertions.assertNotNull(reviewList);
+    }
+
+    @Test
+    void findAllReviewsByBuyer_returnNotFoundException_whenBuyerDoesNotExist() {
+        when(buyerRepo.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> reviewService.findAllReviewsByBuyer(buyer.getBuyerCode()));
+    }
+
+    @Test
+    void findAllReviewsByBuyer_returnNotFoundException_whenBuyerHasNoReviews() {
+        when(buyerRepo.findById(anyLong())).thenReturn(Optional.ofNullable(buyer));
+        when(reviewRepo.findByBuyer(any())).thenReturn(new ArrayList<>());
+
+        assertThrows(NotFoundException.class, () -> reviewService.findAllReviewsByBuyer(buyer.getBuyerCode()));
+    }
+
+    @Test
+    void deleteReview_whenSuccess() {
+        when(reviewRepo.findById(anyLong())).thenReturn(Optional.ofNullable(review));
+
+        reviewService.deleteReview(review.getReviewCode());
+
+        verify(reviewRepo, times(1)).delete(review);
+    }
+
+    @Test
+    void deleteReview_returnNotFoundException_whenReviewCodeDoesNotExist() {
+        when(reviewRepo.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> reviewService.deleteReview(review.getReviewCode()));
     }
 }
