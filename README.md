@@ -305,6 +305,11 @@ a LATAM, criando os artefatos necessários para permitir as seguintes funcionali
 ```
 </details>
 
+## :green_book: Swagger
+```http
+  http://localhost:8080/swagger-ui.html
+```
+
 ## :file_folder: Downloads
 
 - [User Story (requisito 06)](src/main/resources/Requisito06_ml-add-advertisement-review-01.pdf)
