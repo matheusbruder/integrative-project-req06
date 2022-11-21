@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface AdvertisementRepo extends JpaRepository<Advertisement, Long> {
-    @Query(value = "SELECT DISTINCT a.advertisement_code ,a.name ,a.price ,a.seller_code \n" +
+    @Query(value = "SELECT DISTINCT a.advertisement_code ,a.average_rating ,a.name ,a.price ,a.seller_code \n" +
             "FROM advertisement a \n" +
             "INNER JOIN batch b on a.advertisement_code = b.advertisement_code\n" +
             "INNER JOIN inbound_order i on b.order_code = i.order_code\n" +

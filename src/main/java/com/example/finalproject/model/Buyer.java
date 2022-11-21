@@ -24,4 +24,7 @@ public class Buyer {
     @OneToMany(mappedBy = "buyer", fetch = FetchType.LAZY)
     @JsonIgnoreProperties("buyer")
     private List<PurchaseOrder> purchases;
+
+    @OneToMany(mappedBy = "buyer", fetch = FetchType.LAZY)
+    private List<Review> reviews;
 }

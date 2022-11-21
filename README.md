@@ -31,7 +31,8 @@ a LATAM, criando os artefatos necessários para permitir as seguintes funcionali
 - Ser capaz de detectar se há produtos que estão prestes a expirar para tomar alguma medida a esse respeito (poder devolvê-los ao Vendedor, jogá-los fora ou realizar alguma ação comercial específica para liquidá-los).
 - Para poder consultar o estoque, listar quais produtos estão em qual armazém e dado um produto específico, entender também em qual armazém ele está armazenado.
 - Poder cadastrar o pedido de compra para que os colaboradores dentro do Fullfilment possam montar o (s) pedido (s) para despachá-los.
-
+#### Funcionalidade extra
+- Poder inserir uma avaliação do produto para que futuros compradores tenham uma referência para suas respectivas compras.
 
 ## :pencil: Modelagem UML
 
@@ -241,8 +242,78 @@ a LATAM, criando os artefatos necessários para permitir as seguintes funcionali
 
 </details>
 
+<details>
+    <summary><h3> Requerimento 6   :tada:</h3></summary>
 
-## :file_folder: Download Endpoints
 
+#### Create Review for the Advertisement
+
+```http
+  POST localhost:8080/api/v1/fresh-products/review
+```
+###### **@RequestBody**
+
+```json
+{
+  "advertisementCode": 1,
+  "buyerCode": 1,
+  "rating": 3,
+  "comment": "This product is wonderful, it arrived frozen as expected and everyone here at home liked it."
+}
+```
+
+
+#### Update Review
+
+```http
+  PUT localhost:8080/api/v1/fresh-products/review/${reviewCode}
+```
+###### **@RequestBody**
+
+```json
+{
+  "rating" : 5,
+  "comment" : "This product is wonderful, it arrived frozen as expected and everyone at home liked it a lot."
+}
+```
+
+
+#### List Best Rated Advertisement by Category
+
+```http
+  GET localhost:8080/api/v1/fresh-products/review/list?category=${category}&limit=${limit}
+```
+| Parâmetro  | Tipo     | Descrição                                                                      |
+|:-----------|:---------|:-------------------------------------------------------------------------------|
+| `category` | `string` | **Obrigatório**. A categoria que você quer: *Refrigerado, Fresco ou Congelado* |
+| `limit`    | `int`    | **Opicional**. O número limite da listagem de anúncios                         |
+
+
+#### List All Advertisement by Buyer
+
+```http
+  GET localhost:8080/api/v1/fresh-products/review/rating-list?buyer=${buyerCode}
+```
+| Parâmetro | Tipo  | Descrição                                            |
+|:----------|:------|:-----------------------------------------------------|
+| `buyer`   | `int` | **Obrigatório**. O código do comprador que você quer |
+
+
+#### Delete Review
+
+```http
+  DELETE localhost:8080/api/v1/fresh-products/review/${reviewCode}
+```
+</details>
+
+## :green_book: Swagger
+```http
+  http://localhost:8080/swagger-ui.html
+```
+Abaixo imagem do exemplo da documentação swagger para o requisito 06 (*review*).
+![Screenshot swagger docs](src/main/resources/images/swagger.png)
+## :file_folder: Downloads
+
+- [User Story (requisito 06)](src/main/resources/Requisito06_ml-add-advertisement-review-01.pdf)
 - [Collection (endpoints)](src/main/resources/projeto-integrador.postman_collection.json)
 

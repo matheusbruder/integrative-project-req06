@@ -49,28 +49,28 @@ VALUES ('Cristiano Ronaldo');
 
 -- ADVERTISEMENT
 -- Congelados
-INSERT INTO advertisement(name, price, seller_code)
-VALUES ("Hamburguer", 2.00, 1);
-INSERT INTO advertisement(name, price, seller_code)
-VALUES ("Pizza", 4.00, 1);
-INSERT INTO advertisement(name, price, seller_code)
-VALUES ("Frango", 15.00, 2);
-INSERT INTO advertisement(name, price, seller_code)
-VALUES ("Sorvete", 5.50, 3);
+INSERT INTO advertisement(name, price, average_rating, seller_code)
+VALUES ("Hamburguer", 2.00, 0.0, 1);
+INSERT INTO advertisement(name, price, average_rating, seller_code)
+VALUES ("Pizza", 4.00, 0.0, 1);
+INSERT INTO advertisement(name, price, average_rating, seller_code)
+VALUES ("Frango", 15.00, 0.0, 2);
+INSERT INTO advertisement(name, price, average_rating, seller_code)
+VALUES ("Sorvete", 5.50, 0.0, 3);
 -- Refrigerados
-INSERT INTO advertisement(name, price, seller_code)
-VALUES ("Margarina", 12.00, 1);
-INSERT INTO advertisement(name, price, seller_code)
-VALUES ("Iorgute", 8.00, 1);
-INSERT INTO advertisement(name, price, seller_code)
-VALUES ("Queijo de minas", 25.00, 3);
+INSERT INTO advertisement(name, price, average_rating, seller_code)
+VALUES ("Margarina", 12.00, 0.0, 1);
+INSERT INTO advertisement(name, price, average_rating, seller_code)
+VALUES ("Iorgute", 8.00, 0.0, 1);
+INSERT INTO advertisement(name, price, average_rating, seller_code)
+VALUES ("Queijo de minas", 25.00, 0.0, 3);
 -- Frescos
-INSERT INTO advertisement(name, price, seller_code)
-VALUES ("Alface", 2.10, 2);
-INSERT INTO advertisement(name, price, seller_code)
-VALUES ("Tomate", 1.90, 3);
-INSERT INTO advertisement(name, price, seller_code)
-VALUES ("Mamão", 4.50, 3);
+INSERT INTO advertisement(name, price, average_rating, seller_code)
+VALUES ("Alface", 2.10, 0.0, 2);
+INSERT INTO advertisement(name, price, average_rating, seller_code)
+VALUES ("Tomate", 1.90, 0.0, 3);
+INSERT INTO advertisement(name, price, average_rating, seller_code)
+VALUES ("Mamão", 4.50, 0.0, 3);
 
 --INBOUND ORDER
 -- Congelados

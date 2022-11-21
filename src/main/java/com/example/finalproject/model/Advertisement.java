@@ -27,6 +27,9 @@ public class Advertisement {
     @NotNull
     private BigDecimal price;
 
+    @NotNull
+    private Double averageRating;
+
     @OneToMany(mappedBy = "advertisement", cascade = CascadeType.PERSIST)
     @ToString.Exclude
     @JsonIgnore
@@ -42,4 +45,6 @@ public class Advertisement {
     @ToString.Exclude
     private List<PurchaseItem> purchaseItems;
 
+    @OneToMany(mappedBy = "advertisement", fetch = FetchType.LAZY)
+    private List<Review> reviews;
 }
