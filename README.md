@@ -31,7 +31,8 @@ a LATAM, criando os artefatos necessários para permitir as seguintes funcionali
 - Ser capaz de detectar se há produtos que estão prestes a expirar para tomar alguma medida a esse respeito (poder devolvê-los ao Vendedor, jogá-los fora ou realizar alguma ação comercial específica para liquidá-los).
 - Para poder consultar o estoque, listar quais produtos estão em qual armazém e dado um produto específico, entender também em qual armazém ele está armazenado.
 - Poder cadastrar o pedido de compra para que os colaboradores dentro do Fullfilment possam montar o (s) pedido (s) para despachá-los.
-
+#### Funcionalidade extra
+- Poder inserir uma avaliação do produto para que futuros compradores tenham uma referência para suas respectivas compras.
 
 ## :pencil: Modelagem UML
 
@@ -309,7 +310,8 @@ a LATAM, criando os artefatos necessários para permitir as seguintes funcionali
 ```http
   http://localhost:8080/swagger-ui.html
 ```
-
+Abaixo imagem do exemplo da documentação swagger para o requisito 06 (*review*).
+![Screenshot swagger docs](src/main/resources/images/swagger.png)
 ## :file_folder: Downloads
 
 - [User Story (requisito 06)](src/main/resources/Requisito06_ml-add-advertisement-review-01.pdf)
